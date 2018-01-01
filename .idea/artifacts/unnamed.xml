@@ -1,0 +1,23 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="unnamed">
+    <output-path>$PROJECT_DIR$/out/artifacts/unnamed</output-path>
+    <root id="archive" name="unnamed.jar">
+      <element id="module-output" name="Hadoop" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-annotations:2.7.3" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-common:2.7.3" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-auth:2.7.3" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-distcp:2.7.3" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-hdfs:2.7.3" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-mapreduce-client-common:2.7.3" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-mapreduce-client-core:2.7.3" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-mapreduce-client-jobclient:2.7.3" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-mapreduce-client-shuffle:2.7.3" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-streaming:2.7.3" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-yarn-api:2.7.3" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-yarn-client:2.7.3" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-yarn-common:2.7.3" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-yarn-server-common:2.7.3" />
+      <element id="library" level="project" name="Maven: org.apache.hadoop:hadoop-yarn-server-nodemanager:2.7.3" />
+    </root>
+  </artifact>
+</component>
