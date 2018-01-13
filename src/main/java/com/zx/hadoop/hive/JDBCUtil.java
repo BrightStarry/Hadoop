@@ -11,6 +11,8 @@ import java.util.Optional;
  */
 public class JDBCUtil {
 
+
+
     private static String driver = "org.apache.hive.jdbc.HiveDriver";
     private static String url = "jdbc:hive2://106.14.7.29:10000/default";
 

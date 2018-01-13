@@ -1,6 +1,7 @@
 ### Hadoop学习 
--还有hive的学习,见Hive.md
--hbase的学习,见Hbase.md
+* 还有hive的学习,见Hive.md
+* hbase的学习,见Hbase.md
+* Spark/Flink/Beam入门,见Spark.md
 
 #### 奇淫巧技
 * 一个类可以实现CommandLineRunner接口,然后实现run()方法.该方法会在容器启动后最先被调用.  
@@ -662,7 +663,6 @@ hadoop jar /zx/Hadoop-1.0-SNAPSHOT-jar-with-dependencies.jar com.zx.hadoop.log.L
                    home = System.getenv("HADOOP_HOME");
                  }
     >
-    就酱..看源码好爽.
     
     * 还可以直接使用FsShell(注意是boot data啥的包下的)
     >
@@ -705,6 +705,15 @@ hadoop jar /zx/Hadoop-1.0-SNAPSHOT-jar-with-dependencies.jar com.zx.hadoop.log.L
 学不动.. 需要的时候再看吧.
 
 
+#### Hadoop3.x新特性
+* Common(hadoop通用组件)
+    * shell脚本重写,但保证了兼容性
+* HDFS
+    * 支持消除编码(Erasure Coding)替换副本机制(缺点:冷门文件也是保存同样个数的副本,占用空间).
+    * 支持2个以上的NameNodes
+    * DataNode的平衡功能,例如新加一台机器,可以让新旧机器的文件量平衡
+    * 多个服务默认端口发生变化.
+* 详细的自行查看官方文档
 
     
 
