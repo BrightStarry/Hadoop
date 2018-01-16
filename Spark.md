@@ -1,11 +1,23 @@
-
+#### Spark
 
 #### bug
 * linux中tar命令提示错误,可能是下载时,下载的链接不是最终连接,例如点进去还有一个目录,
 但你wget了前一个目录.
 
 
-#### Spark
+* MapReduce局限性
+    1. 代码繁琐
+    2. 只支持map和reduce方法,
+    3. 效率低
+    4. 不适合迭代多次/交互式/流式处理
+* 框架多样化：会导致学习/运维成本都提高
+    1. 批处理（离线）：MapReduce、Hive、Pig
+    2. 流式处理（实时）： Storm、JStorm
+    3. 交互式计算：Impala
+    
+* Spark就能完成上面这些所能做的事
+
+
 * 安装scala和maven以及spark
 解压,配置环境变量即可.(直接在阿里云服务器上wget scala的解压包..速度比本地翻墙快多了)  
 分别运行scala 和 mvn -version测试.
@@ -36,7 +48,9 @@ local表示运行模式是本地,其他可选项有yarn/standalone(自带的)等
 >
 * 上面的真正代码是(运行时不要分行)
 >
-    sc.textFile("file:///zx4/Dockerfile").flatMap(line => line.split(" ")).map(word => (word,1)).reduceByKey(_ + _).collect
+    sc.textFile("file:///zx4/Dockerfile")
+    .flatMap(line => line.split(" "))
+    .map(word => (word,1)).reduceByKey(_ + _).collect
 >
 * 可进入http://106.14.7.29:4040 查看管理界面
 

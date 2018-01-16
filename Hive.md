@@ -26,6 +26,7 @@
 * Hive的元数据
     * Hive将元数据存储在数据库中(metastore),支持mysql/derby(默认)/oracle等
     * 元数据包括表的名字/列/分区和其他属性/表的属性(是否为外部表等)/表的数据所在目录等
+    * 可以与SparkSQL等相互共享数据
 
 * 一条HQL如何执行  
 解释器/编译器/优化器完成HQL语句从词法分析/语法分析/编译/优化.以及查询计划(Plan,类似.java - .class)的生成.  
@@ -35,9 +36,12 @@
 ![](img/10.png)
 
 
+* 由Facebook开源,最初用于解决海量结构化的日志数据统计问题
+* Hive底层的执行引擎有:MapReduce/Tez/Spark
+* 压缩: GZIP/LZO/Snappy/BZIP2
+* 存储: TextFile/SequenceFile/RCFile/ORC/Parquet
+
 #### Hive安装
-
-
 * 嵌入模式
     * 元数据被保存在hive自带的derby仓库中
     * 只允许创建一个连接,多用于deno
@@ -75,12 +79,16 @@
         </property>
     </configuration>
     
+    参考hive-env.sh.template新建 hive-env.sh
+        配置 HADOOP_HOME=xxx
+    
      配置环境变量
      将hive初始化 
      schematool -dbType mysql -initSchema
     (我因为hive-site.xml里面的单词写错了..一直给我报脚本错误啥的...)
     
     运行 hive
+    ./bin/hive
 >
 
 #### Hive的启动方式
@@ -440,6 +448,18 @@ Hive的自定义函数(UDF):User Defined Function
 
 * Thrift Client
 ![](img/13.png)
+
+#### Hive实现单词统计
+1. 创建单词统计表,用content字段存储string类型的单词文本
+create table hive_wordcount(content String);
+1. 将单词文本从file导入hive的表
+load data local inpath '/xxx' into table hive_wordcount
+3. 执行sql,统计;   
+//lateral view explode() : 该函数是把每行记录按照指定分隔符拆解,此处是制表符; 结果为ws,然后再起个别名为word
+//然后再按照单词分组
+select word,count(1) form hive_wordcount lateral view explode(split(content, '/t')) wc as word  group by word;
+
+提交指定后会生成MapReduce,并在YARN上生成作业.
 
 
     

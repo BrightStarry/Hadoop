@@ -678,6 +678,7 @@ hadoop jar /zx/Hadoop-1.0-SNAPSHOT-jar-with-dependencies.jar com.zx.hadoop.log.L
     >  
     
     * 在使用我自己的方法注入FileSystem,并注入FsShell后,引发了循环依赖bean的异常.
+  
     
 
 #### Hadoop分布式缓存
@@ -688,6 +689,16 @@ hadoop jar /zx/Hadoop-1.0-SNAPSHOT-jar-with-dependencies.jar com.zx.hadoop.log.L
 ![](img/3.png)
 
 * 加载缓存到内存发生在job执行之前,每个节点各自缓存一份相同的共享数据.如果共享数据太大,可以将共享数据分批缓存,重复执行作业
+
+#### Hadoop3.x新特性
+* Common(hadoop通用组件)
+    * shell脚本重写,但保证了兼容性
+* HDFS
+    * 支持消除编码(Erasure Coding)替换副本机制(缺点:冷门文件也是保存同样个数的副本,占用空间).
+    * 支持2个以上的NameNodes
+    * DataNode的平衡功能,例如新加一台机器,可以让新旧机器的文件量平衡
+    * 多个服务默认端口发生变化.
+* 详细的自行查看官方文档
 
 #### 推荐算法
 * 余弦相似度
@@ -705,15 +716,7 @@ hadoop jar /zx/Hadoop-1.0-SNAPSHOT-jar-with-dependencies.jar com.zx.hadoop.log.L
 学不动.. 需要的时候再看吧.
 
 
-#### Hadoop3.x新特性
-* Common(hadoop通用组件)
-    * shell脚本重写,但保证了兼容性
-* HDFS
-    * 支持消除编码(Erasure Coding)替换副本机制(缺点:冷门文件也是保存同样个数的副本,占用空间).
-    * 支持2个以上的NameNodes
-    * DataNode的平衡功能,例如新加一台机器,可以让新旧机器的文件量平衡
-    * 多个服务默认端口发生变化.
-* 详细的自行查看官方文档
+
 
     
 
