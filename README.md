@@ -16,12 +16,18 @@
 
 
 #### bug
+* 对于java api 8020端口,以及下载文件等,url前缀部分变为乱码(实为阿里云主机名)的bug.
+>
+    修改/etc/sysconfig/network 的hostname为hadoop000(也就是和配置在hosts中的自定义主机名,相同; 还不行则修改NETWORKING=yes)
+    使用hostname命令查看当前主机名,使用hostname xxx命令修改当前主机名.
+    在hosts中将 阿里云外网ip 映射到 hadoop000(自定义主机名) 即可.
+>
 * HDFS.API访问时,一直无法创建文件.报There are 1 datanode(s) run  错误.注意.和下面的错误数字不同.
 暂时无法解决.当时如果不是远程访问是可以的.就此先作罢
 
 * yarn的任务,无法查看其task,可能是HDFS的任务日志路径没有权限
 
-* 云服务的外网ip无法直接在hosts上绑定主机名.需要hosts如下配置(该问题导致的webHSFS下载失败等问题):
+* (应该算是废弃的解决方案)云服务的外网ip无法直接在hosts上绑定主机名.需要hosts如下配置(该问题导致的webHSFS下载失败等问题):
 内网ip 要设置的主机名  
 外网ip 任意主机名  
 

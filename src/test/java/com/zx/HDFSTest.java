@@ -76,9 +76,9 @@ public class HDFSTest {
     @Test
     public void copyFromLocalFile() throws Exception {
 //        Path oldPath = new Path("D:" + File.separator + "doc.txt");
-        String file = "C:\\Users\\97038\\Desktop\\a.txt";
+        String file = "D:\\a.txt";
         Path oldPath = new Path(file);
-        Path newPath = new Path("/zx");
+        Path newPath = new Path("/zxX");
         fileSystem.copyFromLocalFile(oldPath,newPath);
     }
 
@@ -111,14 +111,14 @@ public class HDFSTest {
      */
     @Test
     public void copyToLocalFile() throws Exception {
-        Path oldPath = new Path("/output/wordCount/part-r-00001");
-        Path newPath = new Path("D://2.txt");
+        Path oldPath = new Path("/10000_access.log");
+        Path newPath = new Path("D://111.txt");
         /**
          * 不加前后两个boolean参数会出现空指针异常;(上面的copyFromLocalFile方法同样有两个参数)
          * 第一个boolean表示,是否删除hdfs的源文件;
          * 第二个boolean表示,是否使用原生的文件系统
          */
-//        fileSystem.copyToLocalFile(false,oldPath,newPath,true);
+        fileSystem.copyToLocalFile(false,oldPath,newPath,true);
     }
 
     /**
