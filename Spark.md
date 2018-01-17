@@ -117,4 +117,12 @@ local表示运行模式是本地,其他可选项有yarn/standalone(自带的)等
              --inputFile=/zx4/Dockerfile  --output=/zx4/wordcount_out" -Pflink-runner
     >
     * 运行成功后,输出目录会有多个out文件,可以使用more out*查看所有out文件
-    
+
+
+#### Spark安装
+* 自行编译源码(主要为了和CDH的hadoop适配,spark的包中需要绑定所使用的hadoop)
+    * 在官网选择版本,并选择Source code下载,解压.
+    * 查看官网的文档可得,当前版本(2.2.1)需要maven3.3.9以及java8+.
+    * 并需要配置maven使用内存数的参数(如果使用内置mvn,会自动添加,并且spark在测试编译时,也都会自动添加)
+        > export MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=512m"
+        
