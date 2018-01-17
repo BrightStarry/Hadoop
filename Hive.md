@@ -457,9 +457,17 @@ load data local inpath '/xxx' into table hive_wordcount
 3. 执行sql,统计;   
 //lateral view explode() : 该函数是把每行记录按照指定分隔符拆解,此处是制表符; 结果为ws,然后再起个别名为word
 //然后再按照单词分组
-select word,count(1) form hive_wordcount lateral view explode(split(content, '/t')) wc as word  group by word;
+select word,count(1) from hive_wordcount lateral view explode(split(content, '/t')) wc as word  group by word;
 
 提交指定后会生成MapReduce,并在YARN上生成作业.
+
+#### 注意
+hive cli 已经过时, 可以使用 beeline   
+先启动hiveserver2.   
+然后启动beeline: hive --service beeline  
+启动后,连接到hiveserver2 : !connect jdbc:hive2://106.14.7.29:10000/default 并输入用户名密码, root root
+hive放入lib包的mysql版本要稍高些,否则执行load等命令时会有错误提示.
+
 
 
     

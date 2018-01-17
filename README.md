@@ -27,7 +27,7 @@
 
 * yarn的任务,无法查看其task,可能是HDFS的任务日志路径没有权限
 
-* (应该算是废弃的解决方案)云服务的外网ip无法直接在hosts上绑定主机名.需要hosts如下配置(该问题导致的webHSFS下载失败等问题):
+* 云服务的外网ip无法直接在hosts上绑定主机名.需要hosts如下配置(该问题导致的webHSFS下载失败/启动时提示Cannot assign requested address等问题):
 内网ip 要设置的主机名  
 外网ip 任意主机名  
 
@@ -114,7 +114,17 @@ DN(DataNode)：存储；定期向NN发送心跳信息，会报本身Block和健�
                 <name>dfs.name.dir</name>
                 <value>file:/hadoop/name</value>
             </property>
+            <property>
+                <name>dfs.datanode.address</name>
+                <value>0.0.0.0:50010</value>
+            </property>
+            <property>
+                <name>dfs.namenode.rpc-bind-host</name>
+                <value>0.0.0.0</value>
+            </property>
+
         </configutation>
+        
         
    etc/hadoop/slaves 配置子节点,此处只需增加
         hadoop000
@@ -277,6 +287,65 @@ sbin/stop-yarn.sh
     SUBMITED -> ACCEPTED -> RUNNING -> FINISHED
     
     
+* jobhistory: YARN历史作业记录服务
+    * 记录已经运行完的MapReduce信息到指定HDFS目录下
+    * 默认是关闭的
+    * hadoop/etc/hadoop/mapred-site.xml
+        >
+            <property>
+              <name>mapreduce.jobhistory.address</name>
+              <value>hadoop000:10020</value>
+              <description>MapReduce JobHistory Server IPC host:port</description>
+            </property>
+            <property>
+              <name>mapreduce.jobhistory.webapp.address</name>
+              <value>hadoop000:19888</value>
+              <description>MapReduce JobHistory Server Web UI host:port</description>
+            </property>
+            <property>
+                <name>mapreduce.jobhistory.done-dir</name>
+                <value>/history/done</value>
+            </property>
+            <property>
+                <name>mapreduce.jobhistory.intermediate-done-dir</name>
+                <value>/history/done_intermediate</value>
+            </property>
+            <!--临时文件路径-->
+            <property>  
+                <name>yarn.app.mapreduce.am.staging-dir</name>  
+                <value>/user</value>  
+            </property> 
+        >
+    * 进入 yarn-site.xml,修改如下:
+        >
+            <property>
+                <name>yarn.log-aggregation-enable</name>
+                <value>true</value>
+            </property>
+            <property> 
+                <name>yarn.log.server.url</name> 
+                <value>http://hadoop000:19888/jobhistory/logs/</value> 
+            </property> 
+            yarn-site.xml 不配置如下属性,会导致jobhistory启动时输出未开启日志聚合,导致查看历史作业日志时提示无可用.
+            并且,jobhistory启动时输出的未开启日志聚合语句,是INFO级别..很难受.
+            <property>
+                <name>yarn.log-aggregation.retain-seconds</name>
+                <value>186000000</value>
+            </property>
+        >
+    * 在sbin目录使用./mr-jobhistory-daemon.sh start historyserver 启动
+    * 然后在50070页面的已完成job处,点击history即可进入历史作业
+    
+    * 即可在历史job处查看各job的log
+    * 可访问ip:19888/jobhistory 进入历史job页面
+    * 该历史记录还有一个bug,就是从19888页面进入,点击logs的时候提示:  
+    No logs available for container container_1512144759384_0001_01_000001  
+    但是如果此时把url中  
+    http://hadoop000:19888/jobhistory/logs/hadoop000:8042/container_1512144759384_0001_01_000001/job_1512144759384_0001/root  
+    这个8042换成 35764,即可访问,这个35764似乎是随机的.具体可通过yarn8088页面访问logs的时候查看
+    (使用apache hadoop 重新安装了一遍.似乎没问题了)
+    
+    
 #### 分布式处理框架MapReduce
 * 海量数据离线处理,无法实时流式计算
 * 将作业拆分成Map阶段和Reduce阶段
@@ -358,58 +427,7 @@ hadoop jar /zx/Hadoop.jar com.zx.hadoop.mapreduce.WordCountApp hdfs://hadoop000:
     * 在实现它后,还需要设置reduceTask的个数,有多少个reduceTask,就会输出多少个输出文件.  
         例如part-r-0001这样
         
-* jobhistory:历史作业记录服务
-    * 记录已经运行完的MapReduce信息到指定HDFS目录下
-    * 默认是关闭的
-    * hadoop/etc/hadoop/mapred-site.xml
-    * 增加如下
-    >
-        <property>
-          <name>mapreduce.jobhistory.address</name>
-          <value>hadoop000:10020</value>
-          <description>MapReduce JobHistory Server IPC host:port</description>
-        </property>
-        
-        <property>
-          <name>mapreduce.jobhistory.webapp.address</name>
-          <value>hadoop000:19888</value>
-          <description>MapReduce JobHistory Server Web UI host:port</description>
-        </property>
-        
-        <property>
-            <name>mapreduce.jobhistory.done-dir</name>
-            <value>/history/done</value>
-        </property>
-        
-        <property>
-            <name>mapreduce.jobhistory.intermediate-done-dir</name>
-            <value>/history/done_intermediate</value>
-        </property>
 
-    >
-    * 在sbin目录使用./mr-jobhistory-daemon.sh start historyserver 启动
-    * 然后在50070页面的已完成job处,点击history即可进入历史作业
-    * 进入 yarn-site.xml,修改如下:
-    >
-        <property>
-            <name>yarn.log-aggregation-enable</name>
-            <value>true</value>
-        </property>
-        <property> 
-            <name>yarn.log.server.url</name> 
-            <value>http://hadoop000:19888/jobhistory/logs/</value> 
-        </property> 
-
-    >
-    * 即可在历史job处查看各job的log
-    * 可访问ip:19888/jobhistory 进入历史job页面
-    * 该历史记录还有一个bug,就是从19888页面进入,点击logs的时候提示:  
-    No logs available for container container_1512144759384_0001_01_000001  
-    但是如果此时把url中  
-    http://hadoop000:19888/jobhistory/logs/hadoop000:8042/container_1512144759384_0001_01_000001/job_1512144759384_0001/root  
-    这个8042换成 35764,即可访问,这个35764似乎是随机的.具体可通过yarn8088页面访问logs的时候查看
-
-    (使用apache hadoop 重新安装了一遍.似乎没问题了)
 #### 用户行为日志分析
 用户行为日志：用户每次访问网站时所有的行为数据（访问、浏览、搜索、点击...）  
 用户行为轨迹、流量日志  

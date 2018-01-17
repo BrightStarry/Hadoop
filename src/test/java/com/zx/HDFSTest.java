@@ -78,7 +78,7 @@ public class HDFSTest {
 //        Path oldPath = new Path("D:" + File.separator + "doc.txt");
         String file = "D:\\a.txt";
         Path oldPath = new Path(file);
-        Path newPath = new Path("/zxX");
+        Path newPath = new Path("/zxx");
         fileSystem.copyFromLocalFile(oldPath,newPath);
     }
 
