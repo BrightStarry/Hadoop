@@ -41,6 +41,9 @@
 * 压缩: GZIP/LZO/Snappy/BZIP2
 * 存储: TextFile/SequenceFile/RCFile/ORC/Parquet
 
+#### bug
+* hive中有许多保留子,如果用来作为表名/列名会出错,例如user (一句mmp不知当不当讲.)
+
 #### Hive安装
 * 嵌入模式
     * 元数据被保存在hive自带的derby仓库中

@@ -1,7 +1,11 @@
 ### Hadoop学习 
 * 还有hive的学习,见Hive.md
 * hbase的学习,见Hbase.md
-* Spark/Flink/Beam入门,见Spark.md
+* Spark,见spark项目
+* Flink/Beam入门,见Other.md
+
+* 大数据框架,其本质
+![](img/20.png)
 
 #### 奇淫巧技
 * 一个类可以实现CommandLineRunner接口,然后实现run()方法.该方法会在容器启动后最先被调用.  
