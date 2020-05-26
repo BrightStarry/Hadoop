@@ -330,19 +330,19 @@ hive.server2.webui.port是web界面的端口.
     
     将mysql数据导入到hdfs中. -m表示线程数, --target-dir表示hdfs的目录(注意.下面的语句需要在同一行.不能有回车间隔)
     ./sqoop import --connect jdbc:mysql://rm-uf65k2dia4943tqe25o.mysql.rds.aliyuncs.com:3306/test 
-    --username root --password ZhengXing36 --table test1 --columns 'id,name,age' 
+    --username root --password xx --table test1 --columns 'id,name,age' 
     --m 1 --target-dir '/sqoop/test1'
     
     将mysql数据导入到hive中,也可以不指定表名.会自动创建同名的表
     ./sqoop import --hive-import --connect jdbc:mysql://rm-uf65k2dia4943tqe25o.mysql.rds.aliyuncs.com:3306/test 
-    --username root --password ZhengXing36 --table test1 --columns 'id,name,age' --m 1 --hive-table t1
+    --username root --password xx --table test1 --columns 'id,name,age' --m 1 --hive-table t1
     
     将mysql数据导入到hive中,使用where条件 
     --where 'age > 10'
     
     将mysql数据导入到hive中,使用查询语句(' AND $CONDITIONS'必须这么写,不然会报错)
     ./sqoop import --hive-import --connect jdbc:mysql://rm-uf65k2dia4943tqe25o.mysql.rds.aliyuncs.com:3306/test 
-    --username root --password ZhengXing36  --columns 'id,name,age' --m 1 --hive-table t1
+    --username root --password xx  --columns 'id,name,age' --m 1 --hive-table t1
     --query 'select * from t1 where age > 0 AND $CONDITIONS'  
     
     将hive数据(也就是HDFS数据)导出到mysql中 ,--export-dir表示hive要导出的数据在hdfs中的位置,注意,要现在mysql中创建对应的表
