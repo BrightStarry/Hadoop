@@ -118,15 +118,6 @@ DN(DataNode)：存储；定期向NN发送心跳信息，会报本身Block和健�
                 <name>dfs.name.dir</name>
                 <value>file:/hadoop/name</value>
             </property>
-            <property>
-                <name>dfs.datanode.address</name>
-                <value>0.0.0.0:50010</value>
-            </property>
-            <property>
-                <name>dfs.namenode.rpc-bind-host</name>
-                <value>0.0.0.0</value>
-            </property>
-
         </configutation>
         
         
